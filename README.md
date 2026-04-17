@@ -85,30 +85,36 @@ conectando-geracoes-inclusao-digital/
 └── images/
 ```
 
-Como executar o projeto
-Clone este repositório ou faça o download dos arquivos
-Abra o arquivo index.html no navegador
-Navegue pelas páginas utilizando o menu do site
-Público-alvo
+## Como executar o projeto
+
+1. Clone este repositório ou faça o download dos arquivos
+2. Abra o arquivo `index.html` no navegador
+3. Navegue pelas páginas utilizando o menu do site
+
+## Público-alvo
 
 Este projeto foi pensado principalmente para:
 
-pessoas idosas em processo de inclusão digital
-educadores e mediadores de oficinas
-iniciativas sociais e educacionais voltadas à tecnologia acessível
-Diferenciais do projeto
-linguagem simples e acessível
-proposta educativa com foco prático
-simuladores interativos
-incentivo à segurança digital
-interface com recursos de acessibilidade
-aplicação social com impacto real
-Créditos
+- pessoas idosas em processo de inclusão digital
+- educadores e mediadores de oficinas
+- iniciativas sociais e educacionais voltadas à tecnologia acessível
 
-Projeto acadêmico-extensionista desenvolvido no contexto da UNINTER.
+## Diferenciais do projeto
 
-As referências visuais e materiais utilizados podem ser consultados na página creditos.html.
+- linguagem simples e acessível
+- proposta educativa com foco prático
+- simuladores interativos
+- incentivo à segurança digital
+- interface com recursos de acessibilidade
+- aplicação social com impacto real
 
-Licença
+## Créditos
+
+Projeto acadêmico-extensionista desenvolvido no contexto da **UNINTER**.
+
+As referências visuais e materiais utilizados podem ser consultados na página `creditos.html`.
+
+## Licença
 
 Este projeto possui finalidade educacional e acadêmica.
+
