@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz — Inclusão Digital (ID Idosos)</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .quiz-wrap{max-width:980px;margin:0 auto}
+    .quiz-intro{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:16px}
+    .quiz-card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:12px}
+    .quiz-card h3{margin:0 0 8px 0}
+    .choices{display:grid;gap:10px;margin-top:10px}
+    .choice{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid #ddd;border-radius:10px;background:#fafafa;cursor:pointer}
+    .choice input{margin-top:3px}
+    .choice.correct{border-color:#16a34a;background:#f0fff4}
+    .choice.incorrect{border-color:#dc2626;background:#fff5f5}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .score{padding:10px;border-radius:10px;background:#f0f9ff;border:1px solid #bae6fd;margin:12px 0}
+    .muted{color:#666;font-size:14px}
+    .pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#efeafd;border:1px solid #d7cdfb;color:#5f4b8b;font-weight:700;font-size:12px}
+    .big-btn{font-size:16px;padding:12px 16px;border-radius:12px}
+    .speak{background:#eee;border:1px solid #ddd;border-radius:999px;padding:4px 10px;cursor:pointer;font-size:12px}
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Viva Digital 60+</a>
+      <nav class="nav">
+        <a href="index.html">Página inicial</a>
+        <a href="oficinas.html">Oficinas</a>
+        <a href="treinamentos.html">Treinamentos</a>
+        <a href="quiz.html" class="active">Quiz</a>
+        <a href="contato.html">Contato</a>
+      </nav>
+      <div class="a11y-controls" aria-label="Acessibilidade">
+        <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+        <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-wrap">
+      <section class="section">
+        <div class="container quiz-wrap">
+          <h1>Quiz — Inclusão Digital</h1>
+          <div class="quiz-intro">
+            <p>Teste seus conhecimentos! São 8 perguntas rápidas sobre <strong>WhatsApp</strong>, <strong>Mapas/Rotas</strong>, <strong>Meu SUS</strong> e <strong>Segurança</strong>.</p>
+            <p class="muted">Dica: se precisar, clique em <span class="pill">🔊 Ler</span> para ouvir a pergunta. Ao final, veja sua pontuação e dicas de melhoria.</p>
+          </div>
+
+          <div id="quiz"></div>
+          <div class="actions">
+            <button id="btnCorrigir" class="btn big-btn">✅ Conferir respostas</button>
+            <button id="btnRefazer" class="btn big-btn" style="display:none">↺ Refazer</button>
+          </div>
+          <div id="placar" class="score" style="display:none"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Projeto de Extensão – ADS / Uninter • ODS 10 (Redução das Desigualdades) • ODS 4 (Educação de Qualidade)
+   • <a href="creditos.html">Créditos de imagens</a></footer>
+
+  <script>
+    const QUESTIONS = [
+      {
+        id: 'q1',
+        text: 'Recebi no WhatsApp um link dizendo “atualize sua conta do banco agora para evitar bloqueio”. O que fazer?',
+        choices: [
+          'Clicar rapidamente para não perder o prazo.',
+          'Não clicar. Abrir o aplicativo oficial do banco para conferir e, se necessário, falar com o suporte.',
+          'Encaminhar o link para amigos para ver se funciona.'
+        ],
+        answer: 1,
+        tip: 'Golpe comum (phishing). Evite links e procure o app oficial.'
+      },
+      {
+        id: 'q2',
+        text: 'Mensagem urgente diz que um parente precisa de PIX imediatamente. Qual a melhor atitude?',
+        choices: [
+          'Fazer o PIX para ajudar logo.',
+          'Responder pedindo mais informações no mesmo número.',
+          'Ligar para o parente em um número já conhecido ou falar com outro familiar para confirmar.'
+        ],
+        answer: 2,
+        tip: '“Golpe do falso parente”. Sempre confirme pelo contato real.'
+      },
+      {
+        id: 'q3',
+        text: 'Como abrir uma rota a <b>pé</b> até um destino no Google Maps?',
+        choices: [
+          'Abrir a rota e escolher o modo Caminhada no Maps.',
+          'Procurar o destino e escolher o modo Ônibus.',
+          'Enviar localização para um amigo e esperar instruções.'
+        ],
+        answer: 0,
+        tip: 'No Maps, selecione o modo “Caminhada” para rotas a pé.'
+      },
+      {
+        id: 'q4',
+        text: 'Ao instalar um app, ele pede <b>acesso à sua localização</b>. O que é mais seguro?',
+        choices: [
+          'Permitir sempre, para todos os apps.',
+          'Permitir apenas quando fizer sentido para o app (ex.: mapas) ou negar se não precisar.',
+          'Negar sempre, mesmo para apps de rotas.'
+        ],
+        answer: 1,
+        tip: 'Conceda permissões só quando forem necessárias ao uso.'
+      },
+      {
+        id: 'q5',
+        text: 'Para <b>facilitar a leitura</b> em sites e apps, o que ajuda mais?',
+        choices: [
+          'Aumentar o tamanho da fonte e usar alto contraste quando preciso.',
+          'Abaixar o brilho ao mínimo.',
+          'Desativar as atualizações.'
+        ],
+        answer: 0,
+        tip: 'Recursos de acessibilidade (fonte maior, contraste) reduzem barreiras.'
+      },
+      {
+        id: 'q6',
+        text: 'Qual é um bom exemplo de <b>senha forte</b>?',
+        choices: [
+          'Nascimento1980',
+          'M@es-Doce!42',
+          '123456789'
+        ],
+        answer: 1,
+        tip: 'Misture maiúsculas, minúsculas, números e símbolos.'
+      },
+      {
+        id: 'q7',
+        text: 'Wi‑Fi público (shopping, praça): qual cuidado é mais importante?',
+        choices: [
+          'Evitar acessar apps de banco/PIX; se possível, usar a rede do celular.',
+          'Aproveitar para fazer todas as transações bancárias.',
+          'Salvar senhas em arquivos do celular.'
+        ],
+        answer: 0,
+        tip: 'Redes públicas podem ser inseguras para transações.'
+      },
+      {
+        id: 'q8',
+        text: 'Por que manter o celular e os apps atualizados?',
+        choices: [
+          'Porque ocupa espaço.',
+          'Para corrigir falhas de segurança e melhorar o funcionamento.',
+          'Só por estética.'
+        ],
+        answer: 1,
+        tip: 'Atualizações trazem correções e melhorias de segurança.'
+      }
+    ];
+
+    function speak(txt){
+      try{
+        const s = window.speechSynthesis; if(!s) return;
+        const u = new SpeechSynthesisUtterance(txt.replace(/<[^>]+>/g,''));
+        u.lang = 'pt-BR'; s.cancel(); s.speak(u);
+      }catch{}
+    }
+
+    function renderQuiz(){
+      const root = document.getElementById('quiz');
+      root.innerHTML = '';
+      QUESTIONS.forEach((q, qi) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        const h = document.createElement('h3');
+        h.innerHTML = (qi+1)+'. '+q.text + ' <button class="speak" onclick="speak(\''+q.text.replace(/'/g, "\\'")+'\')">🔊 Ler</button>';
+        card.appendChild(h);
+        const choices = document.createElement('div');
+        choices.className = 'choices';
+        q.choices.forEach((c, ci) => {
+          const id = q.id+'_'+ci;
+          const label = document.createElement('label');
+          label.className = 'choice';
+          label.setAttribute('for', id);
+          label.innerHTML = '<input type="radio" name="'+q.id+'" id="'+id+'" value="'+ci+'"/> <span>'+c+'</span>';
+          choices.appendChild(label);
+        });
+        card.appendChild(choices);
+        root.appendChild(card);
+      });
+    }
+
+    function corrigir(){
+      const root = document.getElementById('quiz');
+      let acertos = 0;
+      QUESTIONS.forEach(q => {
+        const selected = document.querySelector('input[name="'+q.id+'"]:checked');
+        const cards = root.querySelectorAll('label.choice[for^="'+q.id+'_"]');
+        cards.forEach(l => l.classList.remove('correct','incorrect'));
+        if(selected){
+          const val = parseInt(selected.value, 10);
+          const rightId = q.id+'_'+q.answer;
+          const labRight = root.querySelector('label.choice[for="'+rightId+'"]');
+          if(val === q.answer){
+            acertos++;
+            if(labRight) labRight.classList.add('correct');
+          }else{
+            const labSel = root.querySelector('label.choice[for="'+q.id+'_'+val+'"]');
+            if(labSel) labSel.classList.add('incorrect');
+            if(labRight) labRight.classList.add('correct');
+          }
+        }else{
+          // nada marcado: apenas destaca a correta
+          const labRight = root.querySelector('label.choice[for="'+q.id+'_'+q.answer+'"]');
+          if(labRight) labRight.classList.add('correct');
+        }
+      });
+      const placar = document.getElementById('placar');
+      const pct = Math.round((acertos / QUESTIONS.length) * 100);
+      let msg = 'Você acertou <b>'+acertos+'</b> de <b>'+QUESTIONS.length+'</b> ('+pct+'%). ';
+      if(pct === 100) msg += 'Excelente! Continue praticando.';
+      else if(pct >= 75) msg += 'Muito bom! Reveja as dicas nas perguntas erradas.';
+      else msg += 'Que tal revisar os simuladores e tentar de novo?';
+      msg += ' • Foco nos ODS 4 e 10: aprender e reduzir barreiras digitais.';
+      placar.innerHTML = msg;
+      placar.style.display = 'block';
+      document.getElementById('btnRefazer').style.display = 'inline-block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function refazer(){
+      renderQuiz();
+      document.getElementById('placar').style.display = 'none';
+      document.getElementById('btnRefazer').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('btnCorrigir').addEventListener('click', corrigir);
+    document.getElementById('btnRefazer').addEventListener('click', refazer);
+    renderQuiz();
+  </script>
+
+  <script src="a11y.js"></script>
+</body>
+</html>

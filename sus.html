@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu SUS (simulado) – ID Idosos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .sus-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .sus-header {
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+      color: var(--primary);
+    }
+    .nav-tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+    }
+    .nav-tabs button {
+      flex: 1;
+      padding: 0.75rem 0;
+      border: none;
+      background: #f5f5f5;
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .nav-tabs button.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .tab-content {
+      padding: 1rem;
+    }
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: bold;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group button {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .form-group button:hover {
+      background-color: var(--secondary);
+    }
+    .vac-list {
+      list-style: disc;
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="return-bar">
+  <a href="treinamentos.html" class="back-link">← Voltar</a>
+  <div class="a11y-controls" aria-label="Acessibilidade">
+    <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+    <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+  </div>
+</div>
+  <!-- Navbar simplified with back link -->
+  
+  <div class="sus-container">
+    <div class="sus-header">Meu SUS (simulado)</div>
+    <div class="nav-tabs">
+      <button class="tab-link active" data-target="cartao">Cartão</button>
+      <button class="tab-link" data-target="vacinas">Vacinas</button>
+      <button class="tab-link" data-target="agendamentos">Agendamentos</button>
+      <button class="tab-link" data-target="farmacia">Farmácia</button>
+    </div>
+    <div class="tab-content">
+      <div id="cartao" class="tab-pane active">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Usuário Exemplo" onfocus="this.value=''" />
+        </div>
+        <div class="form-group">
+          <label for="cartao">Cartão SUS</label>
+          <input type="text" id="cartao" placeholder="7••• •••• •••• ••••" onfocus="this.value=''" />
+        </div>
+        <p>Disponível (simulado).</p>
+      </div>
+      <div id="vacinas" class="tab-pane">
+        <p><strong>Histórico (simulado):</strong></p>
+        <ul class="vac-list">
+          <li>Influenza – 2024</li>
+          <li>Febre Amarela – 2018</li>
+        </ul>
+      </div>
+      <div id="agendamentos" class="tab-pane">
+        <div class="form-group">
+          <label for="especialidade">Especialidade</label>
+        <select id="especialidade">
+            <option>Clínico Geral</option>
+            <option>Cardiologia</option>
+            <option>Dermatologia</option>
+            <option>Geriatria</option>
+            <option>Neurologia</option>
+            <option>Ortopedia</option>
+            <option>Oftalmologia</option>
+            <option>Psiquiatria</option>
+            <option>Endocrinologia</option>
+            <option>Odontologia</option>
+            <option>Fisioterapia</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="data">Data preferencial</label>
+          <!-- Usamos type="text" para permitir um placeholder amigável (dd/mm/aaaa) e não
+               forçar um seletor de data nativo. O placeholder desaparece quando o
+               usuário foca no campo e retorna se estiver vazio ao sair. -->
+          <input type="text" id="data" placeholder="dd/mm/aaaa" onfocus="if(this.value===this.placeholder){this.value='';}"
+                 onblur="if(this.value===''){this.value=this.placeholder;}" />
+        </div>
+        <div class="form-group">
+          <button onclick="simularAgendamento()">Simular agendamento</button>
+        </div>
+        <p id="msgAgendamento"></p>
+      </div>
+      <div id="farmacia" class="tab-pane">
+        <div class="form-group">
+          <label for="medicamento">Remédio (use o nome genérico)</label>
+          <input type="text" id="medicamento" placeholder="Ex.: Losartana 50 mg" />
+        </div>
+        <div class="form-group">
+          <button onclick="buscarMedicamento()">Buscar no Google Maps</button>
+        </div>
+        <p id="resultadoBusca"></p>
+</div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab-link');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelector('.tab-link.active').classList.remove('active');
+        document.querySelector('.tab-pane.active').classList.remove('active');
+        this.classList.add('active');
+        document.getElementById(this.dataset.target).classList.add('active');
+      });
+    });
+
+    function simularAgendamento() {
+      const especialidade = document.getElementById('especialidade').value;
+      const data = document.getElementById('data').value;
+      const msg = document.getElementById('msgAgendamento');
+      if (data && data !== 'dd/mm/aaaa') {
+        // Se a data tiver formato dd/mm/aaaa, usamos diretamente. Caso contrário, tentamos
+        // inverter um formato ISO (yyyy-mm-dd) por precaução.
+        let dataFormatada = data;
+        if (data.includes('-')) {
+          dataFormatada = data.split('-').reverse().join('/');
+        }
+        msg.textContent = `Agendamento para ${especialidade} em ${dataFormatada} realizado com sucesso (simulado).`;
+      } else {
+        msg.textContent = 'Escolha uma data.';
+      }
+    }
+    
+
+function buscarMedicamento() {
+  const termoRaw = document.getElementById('medicamento').value.trim();
+  const resultado = document.getElementById('resultadoBusca');
+  const useGeo = document.getElementById('farmGeo') && document.getElementById('farmGeo').checked;
+  const isPfpb = document.getElementById('pfpb') && document.getElementById('pfpb').checked;
+  if (!termoRaw) { resultado.textContent = 'Digite um medicamento.'; return; }
+  const termo = isPfpb ? ('farmácia popular ' + termoRaw) : ('farmácia ' + termoRaw);
+  resultado.textContent = 'Vou abrir o Google Maps com a sua busca. Se nada abrir, verifique se o navegador bloqueou pop‑ups.';
+
+  function openUrl(lat, lng){
+    const url = lat && lng
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(termo) + '&center=' + lat + ',' + lng + '&zoom=14'
+      : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(termo + ' São Caetano do Sul SP');
+    window.open(url, '_blank');
+  }
+
+  if (useGeo && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      openUrl(pos.coords.latitude.toFixed(6), pos.coords.longitude.toFixed(6));
+    }, () => { openUrl(null, null); }, { timeout: 7000 });
+  } else {
+    openUrl(null, null);
+  }
+}
+  </script>
+
+  
+  <div style="max-width:980px;margin:24px auto 0 auto;font-size:14px;color:#555;padding:0 16px;">
+    <a href="creditos.html">Créditos de imagens</a>
+  </div>
+  <script src="a11y.js"></script>
+</body>
+</html>

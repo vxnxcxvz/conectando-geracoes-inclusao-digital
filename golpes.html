@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anti-golpes – ID Idosos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .golpes-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .golpes-container h2 {
+      color: var(--primary);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .form-group textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    .form-group button {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .form-group button:hover {
+      background-color: var(--secondary);
+    }
+    .resultado {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f8f8f8;
+      border-radius: 6px;
+    }
+    .resultado h3 {
+      margin-top: 0;
+    }
+    .casos {
+      margin-top: 2rem;
+    }
+    .caso {
+      background-color: #f4f5fa;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .caso h4 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+    .caso p {
+      margin-bottom: 0.5rem;
+    }
+    .caso .aviso {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="return-bar">
+  <a href="treinamentos.html" class="back-link">← Voltar</a>
+  <div class="a11y-controls" aria-label="Acessibilidade">
+    <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+    <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+  </div>
+</div>
+  <!-- Navbar simplified with back link -->
+  
+  <main class="golpes-container">
+    <h2>Anti-golpes</h2>
+    <p>Copie e cole aqui a mensagem suspeita recebida pelo WhatsApp ou SMS para verificar sinais de golpe.</p>
+    <div class="form-group">
+      <label for="textoGolpe">Mensagem</label>
+      <textarea id="textoGolpe" placeholder="Ex.: Olá, mãe. Preciso que você me mande um código que vai chegar por SMS. Estou com o celular quebrado..."></textarea>
+    </div>
+    <div class="form-group">
+      <button onclick="analisarMensagem()">Analisar mensagem</button>
+    </div>
+    <div class="resultado" id="resultado" style="display:none;"></div>
+    <div class="casos">
+      <h3>Casos rápidos (exemplos)</h3>
+      <div class="caso">
+        <h4>Prêmio inesperado</h4>
+        <p>“Parabéns! Você ganhou um prêmio incrível. Envie seus dados e confirme o código.”</p>
+        <p class="aviso">→ Possível golpe: suspeite de prêmios que não participou.</p>
+      </div>
+      <div class="caso">
+        <h4>Parente em apuros</h4>
+        <p>“Mãe, troquei de número. Preciso de R$ 500 urgente, me faça um PIX.”</p>
+        <p class="aviso">→ Possível golpe: confirme a identidade antes de transferir dinheiro.</p>
+      </div>
+      <div class="caso">
+        <h4>Link suspeito</h4>
+        <p>“Seu CPF está irregular. Clique no link para regularizar.”</p>
+        <p class="aviso">→ Possível golpe: não clique em links de fontes desconhecidas.</p>
+      </div>
+    </div>
+  </main>
+  <script>
+    function analisarMensagem() {
+      const texto = document.getElementById('textoGolpe').value.toLowerCase();
+      const resultadoEl = document.getElementById('resultado');
+      if (!texto) {
+        alert('Digite ou cole a mensagem para análise.');
+        return;
+      }
+      // Palavras-chave suspeitas divididas por categoria
+      const palavrasFinanceiras = ['pix','depósito','transferência','dinheiro','r$','boleto'];
+      const palavrasUrgencia = ['urgente','agora','imediato','hoje','última','aproveite'];
+      const palavrasPremio = ['prêmio','premio','ganhou','sorteio'];
+      const palavrasCodigo = ['codigo','código','confirme','senha','sms'];
+      const palavrasLink = ['clique','link','http','https','.com'];
+      // Contar ocorrências
+      let score = 0;
+      function countMatches(list) {
+        return list.reduce((acc, p) => acc + (texto.includes(p) ? 1 : 0), 0);
+      }
+      const countFinanceiro = countMatches(palavrasFinanceiras);
+      const countUrgencia = countMatches(palavrasUrgencia);
+      const countPremio = countMatches(palavrasPremio);
+      const countCodigo = countMatches(palavrasCodigo);
+      const countLink = countMatches(palavrasLink);
+      score = countFinanceiro * 2 + countUrgencia * 1.5 + countPremio * 2 + countCodigo * 2 + countLink * 1;
+      // Detectar mensagem com números repetidos (ex.: código de 6 dígitos)
+      const codigoMatch = texto.match(/\b\d{6}\b/);
+      if (codigoMatch) score += 3;
+      // Determinar nível de risco com base no score
+      let nivel = '';
+      let recomendacao = '';
+      if (score <= 2) {
+        nivel = 'Baixo';
+        recomendacao = 'A mensagem parece segura, mas mantenha atenção.';
+      } else if (score <= 5) {
+        nivel = 'Médio';
+        recomendacao = 'Pode ser golpe. Evite clicar em links e confirmar dados.';
+      } else {
+        nivel = 'Alto';
+        recomendacao = 'Provável golpe! Não forneça dados nem códigos, bloqueie o remetente.';
+      }
+      resultadoEl.style.display = 'block';
+      resultadoEl.innerHTML = `<h3>Nível de risco: ${nivel}</h3><p>${recomendacao}</p>`;
+    }
+  </script>
+
+  
+  <div style="max-width:980px;margin:24px auto 0 auto;font-size:14px;color:#555;padding:0 16px;">
+    <a href="creditos.html">Créditos de imagens</a>
+  </div>
+  <script src="a11y.js"></script>
+</body>
+</html>

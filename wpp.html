@@ -1,0 +1,258 @@
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhatsApp (simulado)</title>
+<style>
+:root{--brand:#5a4596;--brand-600:#6f57b6;--bg:#f6f6fb;--bubble-in:#ffffff;--bubble-out:#6f57b6}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;color:#2b2452}
+.container{max-width:1100px;margin:0 auto;padding:16px}
+.backbar .container{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.a11y-controls{display:flex;gap:8px}
+.a11y-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:8px;padding:6px 10px;font-weight:800;cursor:pointer}
+.a11y-btn:hover{background:rgba(255,255,255,.25)}
+.backbar{position:sticky;top:0;z-index:50;background:var(--brand);color:#fff;padding:10px 16px;font-weight:700;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.backbar a{display:inline-flex;gap:8px;align-items:center;color:#fff;text-decoration:none}
+.backbar svg{width:18px;height:18px;fill:#fff}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.12);overflow:hidden}
+.card-header{display:flex;align-items:center;gap:10px;background:var(--brand);color:#fff;padding:12px 16px}
+.card-header img{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5)}
+.card-header .title{font-weight:800}
+.search-row{display:flex;gap:8px;padding:8px 12px;background:#f4f0ff;border-bottom:1px solid #e7defd}
+.search-row input{flex:1;padding:10px 12px;border:1px solid #d9cfff;border-radius:8px;background:#fff;outline:none}
+.search-row button{background:#6f57b6;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
+.chat{height:58vh;min-height:360px;overflow:auto;background:linear-gradient(#faf9ff,#f7f6ff)}
+.msg{max-width:70%;margin:10px 12px;padding:10px 12px;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);word-wrap:break-word}
+.msg span{white-space:pre-wrap}
+.in{background:var(--bubble-in)}
+.out{background:var(--bubble-out);color:#fff;margin-left:auto}
+.msg img,.msg video{max-width:220px;border-radius:10px;display:block}
+.msg audio,.msg video{width:220px}
+.composer{display:flex;align-items:center;gap:8px;padding:12px;background:#f4f0ff;border-top:1px solid #e7defd}
+.btn{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:var(--brand-600);color:#fff;border:none;border-radius:8px;cursor:pointer}
+.btn.rec{background:#a34b4b}
+.input-wrap{flex:1;display:flex;align-items:center;background:#fff;border:1px solid #d9cfff;border-radius:999px;padding:6px 10px}
+#msg-input{flex:1;border:none;outline:none;font-size:15px;padding:6px 8px;background:transparent}
+.icon{width:18px;height:18px;fill:#fff;display:block}
+.footer-note{padding:24px 0 12px;color:#594c8a;font-size:13px;text-align:center}
+.hidden{display:none}
+</style>
+<style>/*wpp-fixes*/
+.wpp-toolbar .icon-pencil, .wpp-toolbar .icon-gallery, .wpp-toolbar .icon-image { display:none !important; }
+.wpp-inputbar .attach-plus{cursor:pointer}
+/* Bolhas */
+.msg.me{background:#6f5bd0;color:#fff;align-self:flex-end}
+.msg.you{background:#f6f3ff;color:#333;align-self:flex-start}
+</style>
+<style>/*hide-topbar-wpp*/ .topbar{display:none!important}</style></head>
+<body>
+<div class="backbar"><div class="container">
+  <a href="treinamentos.html" aria-label="Voltar para Treinamentos">
+    <svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    <span>Voltar</span>
+  </a>
+  <div class="a11y-controls" aria-label="Acessibilidade">
+    <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+    <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+  </div>
+</div></div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <img src="images/familia_avatar.png" alt="Grupo da Família">
+      <div class="title">Grupo da Família</div>
+    </div>
+    <div class="search-row">
+      <input type="text" placeholder="Pesquisar conversa (simulado)" aria-label="Pesquisar">
+      <button type="button" id="muteBtn">Silenciar 8h</button>
+    </div>
+
+    <div id="chat" class="chat" aria-live="polite" aria-label="Mensagens">
+      <div class="msg in"><span>Oi! Hoje tem almoço na casa da vovó às 12h.</span></div>
+      <div class="msg in"><span>Não esqueça de levar seu prato favorito 🙂</span></div>
+    </div>
+
+    <div class="composer">
+      <!-- + vira o botão de anexar -->
+      <button class="btn" id="plusBtn" title="Anexar (imagens, áudios, vídeos, arquivos)" aria-label="Anexar">+</button>
+      <div class="input-wrap">
+        <input id="msg-input" type="text" placeholder="Digite sua mensagem..." aria-label="Mensagem">
+      </div>
+      <button class="btn" id="sendBtn" title="Enviar" aria-label="Enviar">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+      <button class="btn" id="micBtn" title="Gravar/Parar áudio" aria-label="Gravar">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+      </button>
+      <!-- input escondido para anexos (ligado ao +) -->
+      <input id="fileInput" type="file" class="hidden" multiple accept="image/*,audio/*,video/*,application/*">
+    </div>
+  </div>
+  <div class="footer-note">Projeto de Extensão – ADS / Uninter • ODS 10 (Redução das Desigualdades) • ODS 4 (Educação de Qualidade)</div>
+</div>
+
+<script>
+(function(){
+  const chat = document.getElementById('chat');
+  const input = document.getElementById('msg-input');
+  const sendBtn = document.getElementById('sendBtn');
+  const fileInput = document.getElementById('fileInput');
+  const plusBtn = document.getElementById('plusBtn');
+  const micBtn = document.getElementById('micBtn');
+
+  function bottom(){ chat.scrollTop = chat.scrollHeight; }
+  function bubble(html,cls){ const d=document.createElement('div'); d.className='msg '+cls; d.innerHTML=html; chat.appendChild(d); bottom(); }
+  function nodeBubble(node,cls){ const d=document.createElement('div'); d.className='msg '+cls; d.appendChild(node); chat.appendChild(d); bottom(); }
+  function confirm(kind){ const m={text:'Mensagem recebida!', image:'Imagem recebida!', audio:'Áudio recebido!', file:"Arquivo recebido!", video:"Arquivo recebido!"}; setTimeout(()=>bubble('<span>'+ (m[kind]||m.file) +'</span>','in'),300); }
+
+  function sendText(){
+    const v=(input.value||'').trim(); if(!v) return;
+    bubble('<span>'+ v.replace(/</g,'&lt;') +'</span>','out'); input.value=''; confirm('text');
+  }
+  sendBtn.addEventListener('click', sendText);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendText(); } });
+
+  // + abre o seletor de arquivos e envia
+  plusBtn.addEventListener('click', ()=> fileInput.click());
+  function handleFiles(list){
+    Array.from(list||[]).forEach(f=>{
+      const url = URL.createObjectURL(f);
+      if(f.type.startsWith('image/')){
+        const img = new Image(); img.src=url; img.alt=f.name; nodeBubble(img,'out'); confirm('image');
+      }else if(f.type.startsWith('audio/')){
+        const a=document.createElement('audio'); a.controls=true; a.src=url; nodeBubble(a,'out'); confirm('audio');
+      }else if(f.type.startsWith('video/')){
+        const v=document.createElement('video'); v.controls=true; v.src=url; nodeBubble(v,'out'); confirm('video');
+      }else{
+        const link=document.createElement('a'); link.href=url; link.download=f.name; link.textContent=f.name; nodeBubble(link,'out'); confirm('file');
+      }
+    });
+  }
+  fileInput.addEventListener('change', e=>{ handleFiles(e.target.files); e.target.value=''; });
+
+  // Gravação de áudio (toggle) com envio automático ao parar
+  let rec=null, stream=null, chunks=[];
+  async function startRec(){
+    try{
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        alert('Seu navegador não suporta gravação de áudio.'); return;
+      }
+      stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' :
+                   (MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '');
+      rec = new MediaRecorder(stream, mime?{mimeType:mime}:{});
+      chunks=[];
+      rec.ondataavailable = ev => { if(ev.data && ev.data.size>0) chunks.push(ev.data); };
+      rec.onstop = () => {
+        try{
+          if(chunks.length){
+            const type = chunks[0].type || 'audio/webm';
+            const blob = new Blob(chunks, {type});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('audio'); a.controls = true; a.src = url;
+            nodeBubble(a, 'out'); confirm('audio');
+          }
+        } finally {
+          // encerra mídia e limpa estado
+          if(stream){ stream.getTracks().forEach(t=>t.stop()); }
+          rec=null; stream=null; chunks=[]; micBtn.classList.remove('rec');
+        }
+      };
+      rec.start(200); // pequenos chunks
+      micBtn.classList.add('rec');
+      // segurança: para em 60s
+      setTimeout(()=>{ if(rec && rec.state==='recording') rec.stop(); }, 60000);
+    }catch(err){
+      alert('Não foi possível acessar o microfone. Verifique as permissões.'); console.error(err);
+    }
+  }
+  function toggleRec(){ if(rec && rec.state==='recording') rec.stop(); else startRec(); }
+  micBtn.addEventListener('click', toggleRec);
+
+  // Drag & drop
+  chat.addEventListener('dragover', e=> e.preventDefault());
+  chat.addEventListener('drop', e=>{ e.preventDefault(); handleFiles(e.dataTransfer.files); });
+
+  setTimeout(()=> input.focus(), 300);
+})();
+</script>
+<input type="file" id="fileAttachPlus" style="display:none" multiple accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.txt">
+<script>
+(function(){
+  const plusBtn=document.querySelector('.attach-plus');
+  const fileInput=document.getElementById('fileAttachPlus');
+  const list=document.querySelector('.chat-body')||document.querySelector('#chat');
+  function addMsg(content, cls='you'){ 
+     const b=document.createElement('div'); b.className='msg '+cls; b.style.maxWidth='70%'; b.style.margin='8px'; b.style.padding='10px 12px'; b.style.borderRadius='12px';
+     if (content instanceof HTMLElement){ b.appendChild(content); } else { b.textContent=content; }
+     list.appendChild(b); list.scrollTop=list.scrollHeight;
+  }
+  function confirmByType(file){
+     const t=(file.type||'').toLowerCase();
+     if(t.startsWith('image/')) addMsg('Imagem recebida!','me');
+     else if(t.startsWith('audio/')) addMsg('Áudio recebido!','me');
+     else addMsg('Arquivo recebido!','me');
+  }
+  if(plusBtn && fileInput){
+    plusBtn.addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', (e)=>{
+      const files=[...e.target.files];
+      files.forEach(f=>{
+        if(f.type.startsWith('image/')){
+          const url=URL.createObjectURL(f); const img=new Image(); img.src=url; img.style.maxWidth='220px'; img.style.borderRadius='10px';
+          addMsg(img,'you');
+        }else{
+          addMsg('Arquivo: '+(f.name||'sem nome'),'you');
+        }
+        confirmByType(f);
+      });
+      fileInput.value='';
+    });
+  }
+  // Envio de texto e confirmação automática
+  const input=document.querySelector('.wpp-input')||document.querySelector('input[type=text]');
+  const sendBtn=document.querySelector('.wpp-send')||document.querySelector('[data-send]');
+  if(sendBtn && input){
+    sendBtn.addEventListener('click', ()=>{
+      const v=(input.value||'').trim();
+      if(!v) return;
+      addMsg(v,'you'); addMsg('Mensagem recebida!','me'); input.value='';
+    });
+  }
+  // Gravação de áudio com MediaRecorder
+  const micBtn=document.querySelector('.wpp-mic')||document.querySelector('[data-mic]');
+  if(micBtn){
+    let rec, chunks=[]; let recording=false;
+    async function start(){
+      try{
+        const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+        rec=new MediaRecorder(stream); chunks=[];
+        rec.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
+        rec.onstop=()=>{
+          const blob=new Blob(chunks,{type:'audio/webm'});
+          const url=URL.createObjectURL(blob);
+          const audio=document.createElement('audio'); audio.src=url; audio.controls=true; audio.style.display='block';
+          addMsg(audio,'you'); addMsg('Áudio recebido!','me');
+        };
+        rec.start();
+        micBtn.classList.add('recording');
+        recording=true;
+      }catch(err){ alert('Permissão de microfone negada.'); }
+    }
+    function stop(){
+      if(rec && recording){ rec.stop(); micBtn.classList.remove('recording'); recording=false; }
+    }
+    micBtn.addEventListener('click', ()=> recording? stop(): start());
+  }
+})();</script>
+
+
+  <div style="max-width:980px;margin:24px auto 0 auto;font-size:14px;color:#555;padding:0 16px;">
+    <a href="creditos.html">Créditos de imagens</a>
+  </div>
+  <script src="a11y.js"></script>
+</body>
+</html>

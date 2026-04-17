@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato – ID Idosos</title>
+  <link rel="stylesheet" href="style.css">
+<style>/*contact-unify*/
+form input, form textarea, .contact input, .contact textarea{
+  font-family: inherit; font-size:16px; color:#333;
+}
+</style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Viva Digital 60+</a>
+      <nav class="nav">
+        <a href="index.html">Página inicial</a>
+        <a href="oficinas.html">Oficinas</a>
+        <a href="treinamentos.html">Treinamentos</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="contato.html" class="active">Contato</a>
+      </nav>
+      <div class="a11y-controls" aria-label="Acessibilidade">
+        <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+        <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+<div class="page-wrap"><div class="contact-card">
+    <section class="section contact">
+      <div class="container">
+        <h1>Contato</h1>
+        <p>
+          Precisa de ajuda, quer enviar uma sugestão ou compartilhar sua experiência?
+          Entre em contato conosco. Basta preencher o formulário abaixo e responderemos
+          o mais breve possível.
+        </p>
+        <form onsubmit="event.preventDefault(); alert('Mensagem enviada (simulado).'); this.reset();" style="max-width: 600px; margin-top: 1rem;">
+          <input type="text" placeholder="Seu nome" required />
+          <input type="email" placeholder="Seu e‑mail" required />
+          <textarea rows="4" placeholder="Sua mensagem" required></textarea>
+          <button>Enviar</button>
+        </form>
+      </div>
+    </section>
+  </div></div>
+</main>
+
+  <footer class="footer">
+    Projeto de Extensão – ADS / Uninter • ODS 10 (Redução das Desigualdades) • ODS 4 (Educação de Qualidade)
+   • <a href="creditos.html">Créditos de imagens</a></footer>
+
+  <script src="a11y.js"></script>
+</body>
+</html>

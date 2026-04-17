@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treinamentos – ID Idosos</title>
+  <link rel="stylesheet" href="style.css">
+<style>/*harmonize*/
+.grid-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+@media(max-width:1100px){.grid-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.grid-cards{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;justify-content:space-between;min-height:260px}
+.card .chip{display:inline-block;background:#efeafd;border:1px solid #e2d7ff;color:#5b46a1;padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:8px}
+.card h3{margin:4px 0 6px}
+.card p{flex:1 1 auto;margin:0 0 14px}
+.card .button{align-self:flex-start}
+</style>
+</head>
+<body>
+<header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Viva Digital 60+</a>
+      <nav class="nav">
+        <a href="index.html">Página inicial</a>
+        <a href="oficinas.html">Oficinas</a>
+        <a href="treinamentos.html" class="active">Treinamentos</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="contato.html">Contato</a>
+      </nav>
+      <div class="a11y-controls" aria-label="Acessibilidade">
+        <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+        <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+      </div>
+    </div>
+  </header>
+<main>
+<div class="page-wrap">
+    <section class="section">
+      <div class="container">
+        <h1>Treinamentos</h1>
+        <p>Selecione um simulador para praticar:</p>
+        <div class="trainings-grid">
+  <div class="training-card">
+    <span class="badge">Mensagens</span>
+    <h3>WhatsApp (simulado)</h3>
+    <p>Pratique enviar mensagens de texto e áudio, anexar fotos e documentos, fazer chamadas e silenciar grupos com segurança.</p>
+    <a class="btn" href="wpp.html">Abrir simulador</a>
+  </div>
+  <div class="training-card">
+    <span class="badge">Rotas</span>
+    <h3>Mapas/Rotas (simulado)</h3>
+    <p>Insira origem e destino para ver uma rota simples ou abra a rota no Google Maps real para obter instruções precisas.</p>
+    <a class="btn" href="maps.html">Abrir simulador</a>
+  </div>
+  <div class="training-card">
+    <span class="badge">Serviços</span>
+    <h3>Meu SUS (simulado)</h3>
+    <p>Preencha seus dados, consulte histórico de vacinas, simule agendamentos e busque medicamentos.</p>
+    <a class="btn" href="sus.html">Abrir simulador</a>
+  </div>
+  <div class="training-card">
+    <span class="badge">Segurança</span>
+    <h3>Anti‑golpes</h3>
+    <p>Cole mensagens suspeitas e verifique se apresentam sinais de golpe. Aprenda a reconhecer links perigosos, pedidos urgentes e ofertas falsas.</p>
+    <a class="btn" href="golpes.html">Abrir simulador</a>
+  </div>
+</div>
+</div>
+</div>
+    </section>
+  </div>
+</main>
+<footer class="footer">
+    Projeto de Extensão – ADS / Uninter • ODS 10 (Redução das Desigualdades) • ODS 4 (Educação de Qualidade)
+   • <a href="creditos.html">Créditos de imagens</a></footer>
+
+  <script src="a11y.js"></script>
+</body>
+</html>

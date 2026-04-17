@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapas/Rotas (simulado) – ID Idosos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .map-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .map-container label {
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+    .map-container input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 0.25rem;
+    }
+    .map-container button {
+      margin-top: 1rem;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--primary);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .map-container button:hover {
+      background-color: var(--secondary);
+    }
+    .directions {
+      margin-top: 1rem;
+    }
+    .directions ol {
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="return-bar">
+  <a href="treinamentos.html" class="back-link">← Voltar</a>
+  <div class="a11y-controls" aria-label="Acessibilidade">
+    <button type="button" class="a11y-btn" data-a11y="dec" aria-label="Diminuir tamanho do texto">A-</button>
+    <button type="button" class="a11y-btn" data-a11y="inc" aria-label="Aumentar tamanho do texto">A+</button>
+  </div>
+</div>
+  <!-- Navbar simplified with back link -->
+  
+
+  <main class="map-container">
+    <h2>Mapas/Rotas (simulado)</h2>
+    <p>Insira um ponto de origem e destino para obter instruções simples de rota.</p>
+    <p><em></em>  </p>
+    <label for="origin">Origem</label>
+    <input type="text" id="origin" placeholder="Ex.: Sua casa" />
+    <label for="destination">Destino</label>
+    <input type="text" id="destination" placeholder="Ex.: Centro de saúde" />
+    <!-- Botão único para conferir a rota diretamente no Google Maps -->
+    <button id="openMapsBtn">Conferir rota no Google Maps</button>
+  </main>
+
+  <script>
+    const openMapsBtn = document.getElementById('openMapsBtn');
+    // Ao clicar, abrir a rota no Google Maps com os endereços fornecidos
+    openMapsBtn.addEventListener('click', function() {
+      const origin = document.getElementById('origin').value.trim();
+      const destination = document.getElementById('destination').value.trim();
+      if (!origin || !destination) {
+        alert('Preencha origem e destino.');
+        return;
+      }
+      const url =
+        'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' +
+        encodeURIComponent(origin) +
+        '&destination=' +
+        encodeURIComponent(destination);
+      window.open(url, '_blank');
+    });
+  </script>
+
+  
+  <div style="max-width:980px;margin:24px auto 0 auto;font-size:14px;color:#555;padding:0 16px;">
+    <a href="creditos.html">Créditos de imagens</a>
+  </div>
+  <script src="a11y.js"></script>
+</body>
+</html>
