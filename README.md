@@ -64,6 +64,7 @@ Estrutura do Repositório
     ├── abstract1.png
     ├── abstract2.png
     ├── primei ... (demais imagens)
+    
 images/: contém todos os arquivos de imagem utilizados nas páginas (fotos, ilustrações e avatares).
 Arquivos HTML: representam as páginas do site.
 style.css: define a identidade visual com layout responsivo e cores agradáveis.
