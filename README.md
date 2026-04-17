@@ -83,6 +83,7 @@ conectando-geracoes-inclusao-digital/
 ├── style.css
 ├── a11y.js
 └── images/
+```
 
 Como executar o projeto
 Clone este repositório ou faça o download dos arquivos
