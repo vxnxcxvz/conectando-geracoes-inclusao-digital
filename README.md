@@ -1,5 +1,4 @@
 Conectando Gerações: A Inclusão Digital da Pessoa Idosa
-
 Este repositório armazena os arquivos do projeto “Conectando Gerações: A Inclusão Digital da Pessoa Idosa”, uma iniciativa de extensão do curso de Análise e Desenvolvimento de Sistemas da UNINTER. O projeto visa promover a inclusão digital de pessoas idosas por meio de oficinas teóricas, simuladores práticos e uma plataforma web acessível desenvolvida com HTML, CSS e JavaScript.
 
 Objetivos
